@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Nosso Cardápio Digital</title>
+</head>
+<body>
+
+    <h1>☕ Cardápio da Cafeteria</h1>
+    <button onclick="carregarCardapio()">Carregar Produtos</button>
+
+    <div id="lista-produtos"></div>
+
+    <script>
+        function carregarCardapio() {
+            // ATENÇÃO ALUNOS: Troquem o link abaixo pelo link RAW do Gist de vocês!
+            const urlDoGist = 'https://gist.githubusercontent.com/123testandoaccount/14da7afa2df1f999cdcf87dfd3d0f61f/raw/fda33c2f97517cf94ab7bd1a71b279f85e2a6659/gistfile1.txt';
+
+            // O 'fetch' vai até o Gist buscar o texto
+            fetch(urlDoGist)
+                .then(resposta => resposta.json()) // Transforma o texto em JSON real
+                .then(dados => {
+                    
+                    // Pegamos a div vazia do HTML
+                    let divLista = document.getElementById('lista-produtos');
+                    
+                    // Limpamos a lista caso o usuário clique no botão duas vezes
+                    divLista.innerHTML = '';
+
+                    // O 'forEach' é um laço (loop). Ele vai passar por cada produto do JSON
+                    dados.forEach(item => {
+                        
+                        // Criamos um texto bonito para cada item
+                        let textoDoProduto = `
+                            <p>
+                                <strong>${item.produto}</strong> - R$ ${item.preco} 
+                                <br>
+                                <em>Disponível: ${item.em_estoque ? "Sim" : "Não"}</em>
+                            </p>
+                            <hr>
+                        `;
+
+                        // Jogamos esse texto dentro da nossa div no HTML
+                        divLista.innerHTML += textoDoProduto;
+                        
+                    });
+                })
+                .catch(erro => {
+                    document.getElementById('lista-produtos').innerHTML = "<p>Erro ao carregar o cardápio. Verifique o link do Gist!</p>";
+                });
+        }
+    </script>
+</body>
+</html>
